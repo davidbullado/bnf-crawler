@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, request
 import main
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello, World!"
+    return "Hello, "+main.username
 
 @app.route("/find/<article_title>")
 def find(article_title):

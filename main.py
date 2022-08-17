@@ -7,9 +7,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-import configparser
-config = configparser.RawConfigParser()
-config.read('.secret')
+import os
+
+BNF_USERNAME = os.getenv('BNF_USERNAME')
+BNF_PASSWORD = os.getenv('BNF_PASSWORD')
+
+username = ""
+password = ""
 
 class BnfLoginException(Exception):
     """Base class for other exceptions"""
@@ -24,9 +28,6 @@ class NoArticleFound(Exception):
 
 def login_bnf(driver):
     url = "https://authentification.bnf.fr/login"
-
-    username = config.get('Login','username')
-    password = config.get('Login','password')
 
     driver.get(url)
     driver.find_element_by_id("username").send_keys(username)
