@@ -12,8 +12,8 @@ import os
 BNF_USERNAME = os.getenv('BNF_USERNAME')
 BNF_PASSWORD = os.getenv('BNF_PASSWORD')
 
-username = ""
-password = ""
+username = BNF_USERNAME
+password = BNF_PASSWORD
 
 class BnfLoginException(Exception):
     """Base class for other exceptions"""
