@@ -6,14 +6,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-
 import os
 
-BNF_USERNAME = os.getenv('BNF_USERNAME')
-BNF_PASSWORD = os.getenv('BNF_PASSWORD')
-
-username = BNF_USERNAME
-password = BNF_PASSWORD
+username = os.getenv('BNF_USERNAME')
+password = os.getenv('BNF_PASSWORD')
 
 class BnfLoginException(Exception):
     """Base class for other exceptions"""
@@ -49,7 +45,8 @@ def login_europresse (driver):
 
 
 def europress_is_valid (driver):
-    driver.get('https://nouveau-europresse-com.bnf.idm.oclc.org/Search/Reading')
+    #driver.get('https://nouveau-europresse-com.bnf.idm.oclc.org/Search/Reading')
+    driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
 
     if "authentification.bnf.fr" in driver.current_url:
         raise BnfLoginException
