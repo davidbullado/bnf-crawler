@@ -1,6 +1,6 @@
 from flask import Flask, request
 import main
-import lemonde
+import feeds
 
 app = Flask(__name__)
 
@@ -8,8 +8,8 @@ app = Flask(__name__)
 def get_template_link(title=""):
     html_form = f"""
     <form action="/find" method="post">
-    <input type="text" name="title" value="{title}"/>
-    <input type="submit" value="Submit">
+    <input type="hidden" name="title" value="{title}"/>
+    <input type="submit" value="{title}">
     </form>
     """
     return html_form
@@ -19,6 +19,8 @@ def get_template_link(title=""):
 def hello():
     html = """
     <a href="lemonde">LeMonde.fr</a>
+    <a href="lefigaro">LeFigaro</a>
+    <a href="liberation">Liberation</a>
     """
     return "Hello, " + main.username + get_template_link() + html
 
@@ -36,7 +38,20 @@ def find():
 @app.route("/lemonde")
 def route_lemonde():
     html = ""
-    for title in lemonde.get_feed_lemonde():
+    for title in feeds.get_feed_lemonde():
+        html += get_template_link(title)
+    return html
+
+@app.route("/lefigaro")
+def route_lefigaro():
+    html = ""
+    for title in feeds.get_feed_figaro():
+        html += get_template_link(title)
+    return html
+@app.route("/liberation")
+def route_liberation():
+    html = ""
+    for title in feeds.get_feed_liberation():
         html += get_template_link(title)
     return html
 
