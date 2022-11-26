@@ -3,15 +3,15 @@ import unicodedata
 
 
 def get_feed(RSS):
-    feed = {}
+    feed = []
     nf = feedparser.parse(RSS)
     for entry in nf.entries:
         news = {}
+        news['id'] = entry['id']
         news['title'] = unicodedata.normalize("NFKC", entry['title'])
         news['link'] = entry['link']
         news['description'] = unicodedata.normalize("NFKC", entry['description'])
-        id = entry['id']
-        feed[id] = news
+        feed.append(news)
     return feed
 
 
