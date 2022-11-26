@@ -42,12 +42,21 @@ def route_lemonde():
         html += get_template_link(title)
     return html
 
+@app.route("/lemonde/feed")
+def route_lemonde_feed():
+    return feeds.get_feed_lemonde()
+
 @app.route("/lefigaro")
 def route_lefigaro():
     html = ""
     for title in feeds.get_feed_figaro():
         html += get_template_link(title)
     return html
+
+@app.route("/lefigaro/feed")
+def route_lefigaro_feed():
+    return feeds.get_feed_figaro()
+
 @app.route("/liberation")
 def route_liberation():
     html = ""
@@ -55,6 +64,9 @@ def route_liberation():
         html += get_template_link(title)
     return html
 
+@app.route("/liberation/feed")
+def route_liberation_feed():
+    return feeds.get_feed_liberation()
 
 if __name__ == "__main__":  # There is an error on this line
     app.run(debug=True, host='0.0.0.0')

@@ -3,12 +3,16 @@ import unicodedata
 
 
 def get_feed(RSS):
-    titles = []
+    feed = {}
     nf = feedparser.parse(RSS)
     for entry in nf.entries:
-        title = unicodedata.normalize("NFKC", entry['title'])
-        titles.append(title)
-    return titles
+        news = {}
+        news['title'] = unicodedata.normalize("NFKC", entry['title'])
+        news['link'] = entry['link']
+        news['description'] = unicodedata.normalize("NFKC", entry['description'])
+        id = entry['id']
+        feed[id] = news
+    return feed
 
 
 def get_feed_lemonde():
