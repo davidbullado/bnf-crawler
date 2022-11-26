@@ -32,14 +32,14 @@ def find():
         html = main.europresse_find_title(main.driver, article_title)
     except main.NoArticleFound:
         html = "<div>No article found</div>"
-    return get_template_link() + html
+    return '<article>'+html+'</article>'
 
 
 @app.route("/lemonde")
 def route_lemonde():
     html = ""
-    for title in feeds.get_feed_lemonde():
-        html += get_template_link(title)
+    for news in feeds.get_feed_lemonde():
+        html += get_template_link(news['title'])
     return html
 
 @app.route("/lemonde/feed")
