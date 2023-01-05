@@ -30,8 +30,9 @@ def find():
     article_title = request.form['title']
     try:
         html = main.europresse_find_title(main.driver, article_title)
-    except main.NoArticleFound:
-        html = "<div>No article found</div>"
+    except Exception as e:
+        img = main.error_screenshot(main.driver)
+        html = f"<h1>{e}</h1><div>{img}</div>"
     return '<article>'+html+'</article>'
 
 

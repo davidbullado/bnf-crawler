@@ -105,13 +105,12 @@ def click_on_link(link_text):
 
     link = driver.find_element_by_link_text(link_text)
 
-    while link is not None:
+    for i in range(3):
         driver.execute_script('arguments[0].scrollIntoView();', link)
         pause += 1
         try:
             action = ActionChains(driver)
             action.move_to_element(link)
-            action.pause(0.5)
             action.click()
             action.pause(pause)
             action.perform()
@@ -121,6 +120,9 @@ def click_on_link(link_text):
             link = driver.find_element_by_link_text(link_text)
         except NoSuchElementException:
             return
+        if link is None:
+            return
+    raise Exception
 
 def click_until_disappear_xpath(xpath):
     timeout = 5
@@ -146,6 +148,11 @@ def click_until_disappear_xpath(xpath):
             link = driver.find_element_by_xpath(xpath)
         except NoSuchElementException:
             return
+
+def error_screenshot(driver):
+    screenshot = driver.get_screenshot_as_base64()
+    img_tag = '<img src="data:image/png;base64,{}">'.format(screenshot)
+    return img_tag
 
 
 def europresse_find_title(driver, title):
@@ -197,6 +204,7 @@ options.add_argument("--disable-gpu")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--no-sandbox")
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+options.add_argument("--window-size=1920,800")
 
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
