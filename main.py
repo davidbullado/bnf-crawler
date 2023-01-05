@@ -154,10 +154,11 @@ def error_screenshot(driver):
     img_tag = '<img src="data:image/png;base64,{}">'.format(screenshot)
     return img_tag
 
-
+import re
 def europresse_find_title(driver, title):
     start_europresse(driver)
-
+    pattern = re.compile(r'[«»]')
+    title = pattern.sub('', title)
     logging.debug(f"Find title {title}")
     driver.find_element_by_id('Keywords').send_keys(f'"{title}"')
     driver.find_element_by_id('btnSearch').click()
@@ -190,6 +191,21 @@ def europresse_find_title(driver, title):
         item.parentNode.replaceChild(t, item);
        })
     """)
+
+    elements = driver.find_elements_by_tag_name("img")
+    # Itérez sur les balises img
+    for element in elements:
+        # Exécutez le script JavaScript qui remplace la balise img par une balise img avec les données en base64
+        driver.execute_script('''
+        var img = arguments[0];
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        img.src = dataURL;
+        ''', element)
 
     article_html = driver.find_element_by_xpath('//*[@id="docText"]/article').get_attribute("outerHTML")
     return article_html
