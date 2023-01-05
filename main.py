@@ -64,19 +64,16 @@ def login_europresse(driver):
     logging.debug("Login to europress")
     #driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
     driver.get('https://www.bnf.fr/fr/ressources-electroniques-de-presse')
-    click_until_disappear_xpath('//*[@id="contentPage"]/div[1]/div/div[2]/div[2]/div/div/div/div[2]/div/div/div/div/h3[5]/a')
+    click_on_link('EUROPRESSE')
 
 
 def europress_is_valid(driver):
     # driver.get('https://nouveau-europresse-com.bnf.idm.oclc.org/Search/Reading')
     logging.debug("Checking europress validity...")
-    #driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
-    driver.get('https://www.bnf.fr/fr/ressources-electroniques-de-presse')
-    click_until_disappear_xpath('//*[@id="contentPage"]/div[1]/div/div[2]/div[2]/div/div/div/div[2]/div/div/div/div/h3[5]/a')
+    login_europresse(driver)
     if "authentification.bnf.fr" in driver.current_url:
         logging.debug("Bnf connection is invalid")
         raise BnfLoginException
-
     try:
         driver.find_element_by_id("welcomeText")
         logging.debug("Europress connection is valid")
@@ -99,12 +96,35 @@ def start_europresse(driver, max_try=2):
         start_europresse(driver, (max_try - 1))
 
 
+def click_on_link(link_text):
+    timeout = 5
+
+    element_present = EC.element_to_be_clickable((By.LINK_TEXT, link_text))
+    WebDriverWait(driver, timeout).until(element_present)
+
+    link = driver.find_element_by_link_text(link_text)
+    driver.execute_script('arguments[0].scrollIntoView();', link)
+
+    while link is not None:
+        try:
+            action = ActionChains(driver)
+            action.move_to_element(link)
+            action.click()
+            action.perform()
+        except ElementNotInteractableException:
+            return
+        try:
+            link = driver.find_element_by_link_text(link_text)
+        except NoSuchElementException:
+            return
+
 def click_until_disappear_xpath(xpath):
     timeout = 5
     element_present = EC.element_to_be_clickable((By.XPATH, xpath))
     WebDriverWait(driver, timeout).until(element_present)
 
     link = driver.find_element_by_xpath(xpath)
+    driver.execute_script('arguments[0].scrollIntoView();', link)
 
     while link is not None:
         try:
@@ -161,8 +181,8 @@ def europresse_find_title(driver, title):
 
 
 options = Options()
-options.add_argument("--headless")
-options.add_argument("start-maximized")
+#options.add_argument("--headless")
+#options.add_argument("start-maximized")
 options.add_argument("disable-infobars")
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-gpu")
