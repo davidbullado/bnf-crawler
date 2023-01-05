@@ -184,8 +184,8 @@ def europresse_find_title(driver, title):
 
 
 options = Options()
-#options.add_argument("--headless")
-#options.add_argument("start-maximized")
+options.add_argument("--headless")
+options.add_argument("start-maximized")
 options.add_argument("disable-infobars")
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-gpu")
