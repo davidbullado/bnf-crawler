@@ -9,13 +9,13 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 import os
 import logging
 
-# logging.basicConfig(
-#     level=logging.DEBUG,
-#     format="%(asctime)s [%(levelname)s] %(message)s",
-#     handlers=[
-#         logging.StreamHandler()
-#     ]
-# )
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
 
 username = os.getenv('BNF_USERNAME')
 password = os.getenv('BNF_PASSWORD')
@@ -75,7 +75,8 @@ def europress_is_valid(driver):
         logging.debug("Bnf connection is invalid")
         raise BnfLoginException
     try:
-        driver.find_element_by_id("welcomeText")
+        #driver.find_element_by_id("welcomeText")
+        driver.find_element_by_id("Keywords")
         logging.debug("Europress connection is valid")
     except NoSuchElementException:
         logging.debug("Europress connection is invalid")
@@ -110,6 +111,7 @@ def click_on_link(link_text):
             action = ActionChains(driver)
             action.move_to_element(link)
             action.click()
+            action.pause(2)
             action.perform()
         except ElementNotInteractableException:
             return
@@ -131,6 +133,7 @@ def click_until_disappear_xpath(xpath):
             action = ActionChains(driver)
             action.move_to_element(link)
             action.click()
+            action.pause(2)
             action.perform()
         except ElementNotInteractableException:
             return
@@ -193,5 +196,5 @@ driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 if __name__ == "__main__":  # There is an error on this line
     europresse_find_title(driver, "Un an après le retour des talibans, le grand bond en arrière de l’Afghanistan")
-
+    driver.quit()
     print('end')
