@@ -62,14 +62,17 @@ def connexion_is_valid(driver):
 
 def login_europresse(driver):
     logging.debug("Login to europress")
-    driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
+    #driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
+    driver.get('https://www.bnf.fr/fr/ressources-electroniques-de-presse')
+    click_until_disappear_xpath('//*[@id="contentPage"]/div[1]/div/div[2]/div[2]/div/div/div/div[2]/div/div/div/div/h3[5]/a')
 
 
 def europress_is_valid(driver):
     # driver.get('https://nouveau-europresse-com.bnf.idm.oclc.org/Search/Reading')
     logging.debug("Checking europress validity...")
-    driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
-
+    #driver.get('https://bnf.idm.oclc.org/login?url=http://nouveau.europresse.com/access/ip/default.aspx?un=bnf')
+    driver.get('https://www.bnf.fr/fr/ressources-electroniques-de-presse')
+    click_until_disappear_xpath('//*[@id="contentPage"]/div[1]/div/div[2]/div[2]/div/div/div/div[2]/div/div/div/div/h3[5]/a')
     if "authentification.bnf.fr" in driver.current_url:
         logging.debug("Bnf connection is invalid")
         raise BnfLoginException
