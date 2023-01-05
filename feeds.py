@@ -26,4 +26,4 @@ def get_feed_figaro():
 def get_feed_liberation():
     return get_feed("https://www.liberation.fr/arc/outboundfeeds/rss/?outputType=xml")
 
-# print(get_feed_lemonde())
+print(get_feed_figaro())

@@ -50,8 +50,8 @@ def route_lemonde_feed():
 @app.route("/lefigaro")
 def route_lefigaro():
     html = ""
-    for title in feeds.get_feed_figaro():
-        html += get_template_link(title)
+    for news in feeds.get_feed_figaro():
+        html += get_template_link(news['title'])
     return html
 
 @app.route("/lefigaro/feed")
@@ -61,8 +61,8 @@ def route_lefigaro_feed():
 @app.route("/liberation")
 def route_liberation():
     html = ""
-    for title in feeds.get_feed_liberation():
-        html += get_template_link(title)
+    for news in feeds.get_feed_liberation():
+        html += get_template_link(news['title'])
     return html
 
 @app.route("/liberation/feed")
